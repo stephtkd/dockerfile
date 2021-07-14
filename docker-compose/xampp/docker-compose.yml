@@ -9,7 +9,7 @@ services:
         ports:
             - "8080:80"
         volumes:
-            - ~/docker/www:/var/www/html
+            - ~/VM/docker/www:/var/www/html
         links:
             - db:db
 #        user: 1000:1000
@@ -19,7 +19,7 @@ services:
         container_name: db
         image: mysql:5.7
         volumes:
-            - ~/docker/mysql:/var/lib/mysql
+            - ~/VM/docker/mysql:/var/lib/mysql
         ports:
             - "3306:3306"
         environment:
