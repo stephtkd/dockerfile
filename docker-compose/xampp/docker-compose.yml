@@ -19,7 +19,9 @@ services:
         container_name: db
         image: mysql:5.7
         volumes:
-            - ~/VM/docker/mysql:/var/lib/mysql
+            - ~/VM/docker/data/mysql/xampp:/var/lib/mysql
+            # Fichier de config spécifique pour mettre la base en debug (attention à la volumétrie de la table general_log)
+            - ./config/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
         ports:
             - "3306:3306"
         environment:

@@ -19,7 +19,10 @@ docker build -t php7.2-with-ext .
 pour créer php7.2-with-ext, db et phpmyadmin (idéal pour développer prestashop 1.7.6.7)  
 Les `data` pour `db` seront placées dans ~/VM/docker/mysql  
 Le `www` pour `php` sera placé dans ~/VM/docker/www  
-Le 'db' sera acceessible depuis le host sur le port 3306 avec le user `root`
+Le 'db' sera acceessible depuis le host sur le port 3306 avec le user `root` mais avec le protocol tcp 
+```
+mysql -u root -p --protocol=tcp
+```
 
 
 #### Pour lancer le docker-compose ####
