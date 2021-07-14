@@ -35,7 +35,7 @@ RUN pecl install -o -f redis \
 && rm -rf /tmp/pear \
 && docker-php-ext-enable redis
 
-COPY php.ini /usr/local/etc/php/
+COPY php.ini-production /usr/local/etc/php/php.ini
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 COPY composer-setup.php /usr/bin/composer-setup.php
