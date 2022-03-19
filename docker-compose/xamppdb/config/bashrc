@@ -1,0 +1,6 @@
+alias composer="php /usr/bin/composer-v2.phar"
+alias ll="ls -l"
+alias lr="ls -lrt"
+alias tf="tail -f "
+cd /home/stephane/project
+

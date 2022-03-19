@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:8-apache
 RUN apt-get update \
 && apt-get install -y \
 libpng-dev \
@@ -16,21 +16,24 @@ libmagickwand-dev \
 libxslt-dev \
 memcached \
 libmemcached-tools \
+libc-client-dev \
+libkrb5-dev \
 git \
 nodejs \
 openssh-client \
-unzip \
 npm --no-install-recommends \
 && rm -r /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ \
---with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ \
+--with-jpeg=/usr/include/
 RUN docker-php-ext-install -j$(nproc) \
 mysqli exif zip dba bz2 calendar bcmath gettext gmp intl pdo pdo_mysql pspell gd \
 #mysqli exif mbstring zip dba bz2 calendar bcmath gettext gmp intl pdo pdo_mysql pspell gd \
 #imap iconv mcrypt soap sockets sysvmsg sysvsem sysvshm wddx xmlrpc xsl
-imap soap sockets sysvmsg sysvsem sysvshm wddx xmlrpc xsl
+soap sysvmsg sysvsem sysvshm
+#RUN docker-php-ext-install -j$(nproc) sockets
+#RUN docker-php-ext-install -j$(nproc) xsla
 
 RUN pecl install imagick && docker-php-ext-enable imagick
 RUN pecl install -o -f redis \
@@ -40,7 +43,8 @@ RUN pecl install -o -f redis \
 COPY php.ini-production /usr/local/etc/php/php.ini
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
-COPY composer-setup.php /usr/bin/composer-setup.php
+COPY composer-setup-v1.php /usr/bin/composer-setup-v1.php
+COPY composer-setup-v2.php /usr/bin/composer-setup-v2.php
 WORKDIR /usr/bin
 RUN php /usr/bin/composer-setup.php --version=1.6.0
 
