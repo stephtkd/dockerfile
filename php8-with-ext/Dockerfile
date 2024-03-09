@@ -60,8 +60,8 @@ RUN echo 'alias composer="php /usr/local/bin/composer.phar"' >> ~/.bashrc \
 	&& echo 'alias tf="tail -f "' >> ~/.bashrc \
 	&& cp ~/.bashrc /home/stephane/.bashrc \
 	&& echo 'cd /var/www/html' >> /home/stephane/.bashrc \
-	&& git config --global user.name "Stéphane Burlet" \
-	&& git config --global user.email stephtkd@yahoo.fr
+	&& su - stephane -c "git config --global user.name 'Stéphane Burlet'" \
+	&& su - stephane -c "git config --global user.email stephtkd@yahoo.fr"
 
 #COPY php.ini-production /usr/local/etc/php/php.ini
 #COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
