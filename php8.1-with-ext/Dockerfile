@@ -1,45 +1,45 @@
-FROM php:8-apache
+FROM php:8.1-apache
 RUN apt-get update \
 && apt-get install -y \
-libpng-dev \
-aptitude \
-libfreetype6-dev \
-libjpeg62-turbo-dev \
+# libpng-dev \
+# aptitude \
+# libfreetype6-dev \
+# libjpeg62-turbo-dev \
 libmcrypt-dev \
 libbz2-dev \
 libgmp-dev \
 libzip-dev \
-libc-client-dev \
-libkrb5-dev \
-libpspell-dev \
-libmagickwand-dev \
-libxslt-dev \
-memcached \
-libmemcached-tools \
-libc-client-dev \
-libkrb5-dev \
+libicu-dev \
+# libc-client-dev \
+# libkrb5-dev \
+# libpspell-dev \
+# libmagickwand-dev \
+# libxslt-dev \
+# memcached \
+# libmemcached-tools \
 git \
 nodejs \
-openssh-client \
+npm \
+# openssh-client \
 unzip \
-npm --no-install-recommends \
+--no-install-recommends \
 && rm -r /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ \
---with-jpeg=/usr/include/
+# RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+# RUN docker-php-ext-configure gd --with-freetype=/usr/include/ \
+#--with-jpeg=/usr/include/
 RUN docker-php-ext-install -j$(nproc) \
-mysqli exif zip dba bz2 calendar bcmath gettext gmp intl pdo pdo_mysql pspell gd \
+mysqli exif zip dba bz2 calendar bcmath gettext gmp intl pdo pdo_mysql
 #mysqli exif mbstring zip dba bz2 calendar bcmath gettext gmp intl pdo pdo_mysql pspell gd \
 #imap iconv mcrypt soap sockets sysvmsg sysvsem sysvshm wddx xmlrpc xsl
-soap sysvmsg sysvsem sysvshm
+# soap sysvmsg sysvsem sysvshm
 #RUN docker-php-ext-install -j$(nproc) sockets
 #RUN docker-php-ext-install -j$(nproc) xsla
 
 #RUN pecl install imagick && docker-php-ext-enable imagick
-RUN pecl install -o -f redis \
-&& rm -rf /tmp/pear \
-&& docker-php-ext-enable redis
+# RUN pecl install -o -f redis \
+# && rm -rf /tmp/pear \
+# && docker-php-ext-enable redis
 
 
 RUN a2enmod rewrite
@@ -50,7 +50,7 @@ RUN addgroup --gid 1000 stephane \
         && chown -R "$APACHE_RUN_USER:$APACHE_RUN_GROUP" /var/lock/apache2 /var/run/apache2
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-&& php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+&& php -r "if (hash_file('sha384', 'composer-setup.php') === 'ed0feb545ba87161262f2d45a633e34f591ebb3381f2e0063c345ebea4d228dd0043083717770234ec00c5a9f9593792') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }" \
 && php composer-setup.php --install-dir=/usr/local/bin \
 && php -r "unlink('composer-setup.php');"
 
